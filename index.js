@@ -82,5 +82,5 @@ app.get('/api', function (req, res) {
 
     }
 });
-var port = process.env.port || 80;
+var port = process.env.PORT || 80;
 app.listen(port);
