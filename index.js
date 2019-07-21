@@ -3,7 +3,7 @@ const fs = require("fs");
 var productb = fs.readFileSync("./templates/product-t.html");
 var cardb = fs.readFileSync("./templates/card-t.html");
 var overviewb = fs.readFileSync("./templates/overview-t.html");
-const json = require("./json/data.json");
+const jsond = require("./json/data.json");
 const express = require('express');
 const app = express();
 app.get(['/', '/overview', '/home'], function (req, res) {
@@ -11,24 +11,24 @@ app.get(['/', '/overview', '/home'], function (req, res) {
     var card = "" + cardb;
 
     var ans = "";
-    for (var i = 0; i < json.length; i++) {
-        var x = card.replace(/{%IMAGES%}/g, json[i].image);
+    for (var i = 0; i < jsond.length; i++) {
+        var x = card.replace(/{%IMAGES%}/g, jsond[i].image);
 
-        x = x.replace(/{%PRODUCT-NAME%}/g, json[i].productName);
+        x = x.replace(/{%PRODUCT-NAME%}/g, jsond[i].productName);
 
-        x = x.replace(/{%ID%}/g, json[i].id);
+        x = x.replace(/{%ID%}/g, jsond[i].id);
 
-        if (!json[i].organic)
+        if (!jsond[i].organic)
             x = x.replace(/{%NOT-ORGANIC%}/g, 'not-organic');
 
-        x = x.replace(/{%QTY%}/g, json[i].quantity);
+        x = x.replace(/{%QTY%}/g, jsond[i].quantity);
 
-        x = x.replace(/{%PRICE%}/g, json[i].price);
+        x = x.replace(/{%PRICE%}/g, jsond[i].price);
         ans = ans + x;
 
     }
     overview = overview.replace(/{%CARD_CARDS%}/, ans)
-    res.send(overview);
+    res.status(200).send(overview);
 
 
 })
@@ -44,21 +44,21 @@ app.get('/products', function (req, res) {
     var id = +n;
     var product = "" + productb;
     var ans = "";
-    var x = product.replace(/{%IMAGES%}/g, json[id].image);
-    x = x.replace(/{%FROM%}/g, json[id].from);
-    x = x.replace(/{%NUTRIENTS%}/g, json[id].nutrients);
-    x = x.replace(/{%DESCRIPTION%}/g, json[id].description);
-    x = x.replace(/{%PRODUCT-NAME%}/g, json[id].productName);
+    var x = product.replace(/{%IMAGES%}/g, jsond[id].image);
+    x = x.replace(/{%FROM%}/g, jsond[id].from);
+    x = x.replace(/{%NUTRIENTS%}/g, jsond[id].nutrients);
+    x = x.replace(/{%DESCRIPTION%}/g, jsond[id].description);
+    x = x.replace(/{%PRODUCT-NAME%}/g, jsond[id].productName);
 
-    if (!json[id].organic)
+    if (!jsond[id].organic)
         x = x.replace(/{%NOT-ORGANIC%}/g, 'not-organic');
 
 
-    x = x.replace(/{%QTY%}/g, json[id].quantity);
+    x = x.replace(/{%QTY%}/g, jsond[id].quantity);
 
-    x = x.replace(/{%PRICE%}/g, json[id].price);
+    x = x.replace(/{%PRICE%}/g, jsond[id].price);
     ans = ans + x;
-    res.send(ans);
+    res.status(200).html.send(ans);
 
 
 
@@ -67,8 +67,8 @@ app.get('/api', function (req, res) {
     var url = req.url;
     var arr = url.split("?");
     if (arr.length === 1) {
-        // res.writeHead(200, { "content-type": "application/JSON" });
-        res.send(json);
+        // res.writeHead(200, { "content-type": "application/jsond" });
+        res.send(jsond);
     } else {
         var n = arr[1];
         var arrn = n.split("");
@@ -78,7 +78,7 @@ app.get('/api', function (req, res) {
         console.log(n);
         var id = +n;
         // res.writeHead(200, { "content-type": "application/JSON" });
-        res.send(json[id]);
+        res.status(200).json.send(jsond[id]);
 
     }
 });
