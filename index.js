@@ -58,7 +58,7 @@ app.get('/products', function (req, res) {
 
     x = x.replace(/{%PRICE%}/g, jsond[id].price);
     ans = ans + x;
-    res.status(200).html.send(ans);
+    res.status(200).send(ans);
 
 
 
